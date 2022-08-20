@@ -1,3 +1,5 @@
+export const PATH_SLASH = process.platform == 'win32' ? "\\\\" : '/';
+
 export const HELP_MESSAGE = 
 `Just a simple way to find files by extension. Thanks for enjoy it!
 Usage: findext EXTENSION(S)
