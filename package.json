@@ -1,0 +1,27 @@
+{
+  "name": "findext",
+  "version": "1.0.0",
+  "description": "Find files in your OS selected by it's extension",
+  "main": "bin/findext",
+  "bin": {
+    "findext": "./bin/findext"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denidiasjr/findext.git"
+  },
+  "keywords": [
+    "cli",
+    "findext"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denidiasjr/findext/issues"
+  },
+  "homepage": "https://github.com/denidiasjr/findext#readme",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "minimist": "^1.2.6"
+  }
+}
