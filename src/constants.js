@@ -8,5 +8,4 @@ Mandatory arguments to long options are mandatory for short options too.
    -s or --source                 set the source directory that you want to find files
    -help or --help                display this help and exit
 If you want to contribute with this project, fork it on GitHub :)
-Repository: https://github.com/denidiasjr/findext
-`
+Repository: https://github.com/denidiasjr/findext`
