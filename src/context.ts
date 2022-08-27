@@ -1,4 +1,8 @@
 class Context {
+    private static instance: Context;
+    private readonly pathsWithErrors: string[];
+    private filesCount: number;
+
     constructor() {
         this.filesCount = 0;
         this.pathsWithErrors = [];
@@ -12,11 +16,19 @@ class Context {
         return this.instance;
     }
 
+    getFilesCount() {
+        return this.filesCount;
+    }
+
+    getPathsWithErrors() {
+        return this.pathsWithErrors;
+    }
+
     incrementFilesCount() {
         this.filesCount++;
     } 
 
-    addPathWithError(path) {
+    addPathWithError(path: string) {
         this.pathsWithErrors.push(path);
     } 
 }

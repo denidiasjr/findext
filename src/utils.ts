@@ -3,24 +3,26 @@ import Context from './context';
 import fs from 'fs';
 import nodePath from 'path';
 
-export const isSameExtension = (a, b) => a.replace('.', '').toLowerCase() === b.replace('.', '').toLowerCase();
+export const isSameExtension = (a: string, b: string) => a.replace('.', '').toLowerCase() === b.replace('.', '').toLowerCase();
 
 export const printPathsWithErrors = () => {
     const context = Context.getInstance();
-    if (context.pathsWithErrors.length > 0) {
+    const pathsWithErrors = context.getPathsWithErrors();
+    if (pathsWithErrors.length > 0) {
         console.log(CONSOLE_RED_COLOR, '\nERROR: Findext couldn\'t access the following folders:');
-        context.pathsWithErrors.forEach(errorPath => console.log(CONSOLE_RED_COLOR, errorPath));
+        pathsWithErrors.forEach(errorPath => console.log(CONSOLE_RED_COLOR, errorPath));
     };
 }
 
 export const printFilesCount = () => {
     const context = Context.getInstance();
-    if (context.filesCount > 0) {
-        console.log(CONSOLE_RED_CYAN, `\nTotal of files listed: ${context.filesCount}`);
+    const filesCount = context.getFilesCount();
+    if (filesCount > 0) {
+        console.log(CONSOLE_RED_CYAN, `\nTotal of files listed: ${filesCount}`);
     };
 }
 
-export const getSizeString = (size) => {
+export const getSizeString = (size: number) => {
     const sizeLength = String(size).length;
 
     if (sizeLength <= 3) {
@@ -38,17 +40,17 @@ export const getSizeString = (size) => {
     return String(size);
 }
 
-export const printFile = (file) => {
+export const printFile = (file: string) => {
     const fileStats = fs.statSync(file);
     console.log(CONSOLE_RED_CYAN, `${file} (${getSizeString(fileStats.size)})`);
 }
 
-export const useDirectory = (source) => {
+export const useDirectory = (source: string) => {
     const absoluteSource = nodePath.isAbsolute(source) ? source : nodePath.resolve(source);
     const context = Context.getInstance();
-    const folders = [];
-    const files = [];
-    let listOfPaths;
+    const folders: string[] = [];
+    const files: string[] = [];
+    let listOfPaths: string[] | null = null;
 
     try {
         listOfPaths = fs.readdirSync(absoluteSource);
@@ -75,7 +77,7 @@ export const useDirectory = (source) => {
     }
 };
 
-export const getExtensions = (source, extensions) => {
+export const getExtensions = (source: string, extensions: string[]) => {
     const { folders, files } = useDirectory(source);
     const context = Context.getInstance();
 
