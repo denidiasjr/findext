@@ -11,7 +11,7 @@ const main = (args: string[]) => {
     }
 
     if (options.version) {
-        return packageJson.version;
+        return console.log(packageJson.version);
     }
 
     const extensionsOption = options.ext || options.extensions || options._[2];
