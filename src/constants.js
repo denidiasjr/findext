@@ -9,3 +9,7 @@ Mandatory arguments to long options are mandatory for short options too.
    -help or --help                display this help and exit
 If you want to contribute with this project, fork it on GitHub :)
 Repository: https://github.com/denidiasjr/findext`
+
+export const CONSOLE_RED_COLOR = '\x1b[31m';
+
+export const CONSOLE_RED_CYAN = '\x1b[36m%s\x1b[0m';

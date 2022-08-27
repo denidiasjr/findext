@@ -1,8 +1,24 @@
-import { PATH_SLASH } from './constants';
+import { CONSOLE_RED_COLOR, CONSOLE_RED_CYAN, PATH_SLASH } from './constants';
+import Context from './context';
 import fs from 'fs';
 import nodePath from 'path';
 
 export const isSameExtension = (a, b) => a.replace('.', '').toLowerCase() === b.replace('.', '').toLowerCase();
+
+export const printPathsWithErrors = () => {
+    const context = Context.getInstance();
+    if (context.pathsWithErrors.length > 0) {
+        console.log(CONSOLE_RED_COLOR, '\nERROR: Findext couldn\'t access the following folders:');
+        context.pathsWithErrors.forEach(errorPath => console.log(CONSOLE_RED_COLOR, errorPath));
+    };
+}
+
+export const printFilesCount = () => {
+    const context = Context.getInstance();
+    if (context.filesCount > 0) {
+        console.log(CONSOLE_RED_CYAN, `\nTotal of files listed: ${context.filesCount}`);
+    };
+}
 
 export const getSizeString = (size) => {
     const sizeLength = String(size).length;
@@ -24,11 +40,12 @@ export const getSizeString = (size) => {
 
 export const printFile = (file) => {
     const fileStats = fs.statSync(file);
-    console.log(`${file} (${getSizeString(fileStats.size)})`);
+    console.log(CONSOLE_RED_CYAN, `${file} (${getSizeString(fileStats.size)})`);
 }
 
 export const useDirectory = (source) => {
     const absoluteSource = nodePath.isAbsolute(source) ? source : nodePath.resolve(source);
+    const context = Context.getInstance();
     const folders = [];
     const files = [];
     let listOfPaths;
@@ -36,19 +53,20 @@ export const useDirectory = (source) => {
     try {
         listOfPaths = fs.readdirSync(absoluteSource);
     } catch (err) {
-        console.error(`ERROR: Couldn't resolve ${absoluteSource} directory.`);
-        process.exit();
+        context.addPathWithError(absoluteSource);
     }
 
-    listOfPaths.forEach(path => {
-        const currentPath = `${absoluteSource}${PATH_SLASH}${path}`;
-        
-        if (fs.lstatSync(currentPath).isDirectory()) {
-            return folders.push(currentPath);
-        }
+    if (listOfPaths) {
+        listOfPaths.forEach(path => {
+            const currentPath = `${absoluteSource}${PATH_SLASH}${path}`;
 
-        files.push(currentPath);
-    });
+            if (fs.lstatSync(currentPath).isDirectory()) {
+                return folders.push(currentPath);
+            }
+    
+            files.push(currentPath);
+        });
+    }
 
     return {
         currentFolder: absoluteSource,
@@ -59,10 +77,16 @@ export const useDirectory = (source) => {
 
 export const getExtensions = (source, extensions) => {
     const { folders, files } = useDirectory(source);
+    const context = Context.getInstance();
 
     folders.forEach(folder => getExtensions(folder, extensions));
     files.forEach(file => 
         extensions.forEach(
-            extension => isSameExtension(extension, nodePath.extname(file)) && printFile(file)
+            extension => {
+                if (isSameExtension(extension, nodePath.extname(file))) {
+                    printFile(file);
+                    context.incrementFilesCount();
+                }
+            }
     ));
 };

@@ -1,5 +1,5 @@
 import { HELP_MESSAGE } from './constants';
-import { getExtensions } from './utils';
+import { getExtensions, printFilesCount, printPathsWithErrors } from './utils';
 import minimist from "minimist";
 
 const main = (args) => {
@@ -10,7 +10,7 @@ const main = (args) => {
     }
 
     const extensionsOption = options.ext || options.extensions || options._[2];
-    const source = options.src || options.source;
+    const source = options.src || options.source || process.cwd();
 
     if (!extensionsOption || typeof extensionsOption !== 'string') {
         return console.error('ERROR: Extensions not listed.');
@@ -26,6 +26,7 @@ const main = (args) => {
     getExtensions(source, extensions);
 
     console.log('Finished!');
+    printFilesCount();
 }
 
 export default main;
