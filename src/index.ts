@@ -1,12 +1,17 @@
 import { HELP_MESSAGE } from './constants';
 import { getExtensions, printFilesCount } from './utils';
 import minimist from "minimist";
+import packageJson from '../package.json';
 
 const main = (args: string[]) => {
     const options = minimist(args);
     
     if (options.help) {
         return console.log(HELP_MESSAGE);
+    }
+
+    if (options.version) {
+        return packageJson.version;
     }
 
     const extensionsOption = options.ext || options.extensions || options._[2];
