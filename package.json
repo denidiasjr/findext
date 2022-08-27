@@ -1,6 +1,6 @@
 {
     "name": "findext",
-    "version": "0.1.1",
+    "version": "0.1.1-beta.0",
     "description": "Find files in your OS selected by it's extension",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
