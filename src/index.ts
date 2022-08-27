@@ -1,8 +1,8 @@
 import { HELP_MESSAGE } from './constants';
-import { getExtensions, printFilesCount, printPathsWithErrors } from './utils';
+import { getExtensions, printFilesCount } from './utils';
 import minimist from "minimist";
 
-const main = (args) => {
+const main = (args: string[]) => {
     const options = minimist(args);
     
     if (options.help) {
